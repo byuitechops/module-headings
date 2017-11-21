@@ -1,28 +1,38 @@
 /*eslint-env node, es6*/
 
 /* Module Description */
+// Removes headings on Modules in D2L to prevent Canvas creating pages for them
 
 /* Put dependencies here */
-
-/* Include this line only if you are going to use Canvas API */
-// const canvas = require('canvas-wrapper');
-
-/* View available course object functions */
-// https://github.com/byuitechops/d2l-to-canvas-conversion-tool/blob/master/documentation/classFunctions.md
+const canvas = require('canvas-wrapper');
 
 module.exports = (course, stepCallback) => {
-    /* Create the module report so that we can access it later as needed.
-    This MUST be done at the beginning of each child module. */
-    course.addModuleReport('moduleName');
+    course.addModuleReport('moduleHeadings');
 
-    /* Used to log successful actions */
-    course.success('moduleName', 'moduleName successfully ...');
+    var manifest = course.content.find(file => file.name === 'imsmanifest.xml');
+    var modules = manifest.dom('organization').children();
 
-    /* How to report an error (Replace "moduleName") */
-    // course.throwErr('moduleName', e);
+    modules = modules.filter((index, element) => {
+        return element.attribs.description != '';
+    });
 
-    /* You should never call the stepCallback with an error. We want the
-    whole program to run when testing so we can catch all existing errors */
+    course.newInfo('moduleHeadingContent', []);
 
+    if (modules) {
+        modules.each((index, element) => {
+            var titleChild = element.children.find(child => {
+                return child.name === 'title';
+            });
+            var moduleTitle = titleChild.children[0].data;
+            course.info.moduleHeadingContent.push([moduleTitle, element.attribs.description]);
+            element.attribs.description = '';
+            course.success('moduleHeadings', `Stored module heading for "${moduleTitle}" in reports. Removed from Manifest.`)
+        });
+    } else {
+        course.success(
+            'moduleHeadings',
+            'There are no modules containing headings. No Canvas pages will be created for these.'
+        );
+    }
     stepCallback(null, course);
 };

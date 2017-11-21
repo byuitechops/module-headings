@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "A template for child modules, used in the conversion tool",
     "main": "main.js",
-    "dependencies": {},
+    "dependencies": {
+        "canvas-wrapper": "git+https://github.com/byuitechops/Canvas-wrapper.git"
+    },
     "devDependencies": {
         "async": "^2.6.0",
         "child-development-kit": "github:byuitechops/child-development-kit",
@@ -23,5 +25,5 @@
         "url": "https://github.com/byuitechops/child-template/issues"
     },
     "homepage": "https://github.com/byuitechops/child-template#readme",
-    "childType": "postImport"
+    "childType": "preImport"
 }
