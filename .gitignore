@@ -1,0 +1,12 @@
+node_modules/
+*.json
+!package.json
+!package-lock.json
+auth.json
+!D2LOriginal/.gitkeep
+!D2LProcessing/.gitkeep
+D2LOriginal/*
+D2LProcessing/*
+documentation/
+coverage/
+.nyc_output/
