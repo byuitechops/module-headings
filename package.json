@@ -1,5 +1,5 @@
 {
-    "name": "child-template",
+    "name": "module-headings",
     "version": "1.0.0",
     "description": "A template for child modules, used in the conversion tool",
     "main": "main.js",
